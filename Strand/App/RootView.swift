@@ -449,7 +449,11 @@ struct RootView: View {
     @ViewBuilder private var todayDetail: some View {
         #if os(macOS)
         NavigationStack {
-            if liquidTodayEnabled { LiquidTodayView() } else { TodayView() }
+            // Resolves the Today roots' TabRoute value pushes (#198); once per stack (#38).
+            Group {
+                if liquidTodayEnabled { LiquidTodayView() } else { TodayView() }
+            }
+            .tabRouteDestinations()
         }
         #else
         TodayView()
